@@ -1,0 +1,16 @@
+# Test hosts (/etc/hosts) file.
+127.0.0.1       localhost # IPv4 localhost
+127.0.1.1       example # hostname
+
+192.168.1.100   server server.local
+192.168.1.101   another
+
+# IPv6
+::1             ip6-localhost ip6-loopback # IPv6 localhost
+fe00::0         ip6-localnet
+ff00::0         ip6-mcastprefix
+ff02::1         ip6-allnodes
+ff02::2         ip6-allrouters
+
+# More IPv4
+192.168.1.200   example.com server.example.com
