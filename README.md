@@ -112,3 +112,9 @@ jpm test
 
 The `build/` directory contains the `jpm build` (called by `jpm test`) output
 of a redistributable binary for the current platform.
+
+
+### Meta
+
+Copyright (c) 2019, R. DuPlain. All rights reserved.
+BSD 2-Clause License.
