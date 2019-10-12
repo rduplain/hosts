@@ -1,5 +1,11 @@
 (import ./lang :prefix "")
 
+(defn peg!
+  "Return a grammar (by value) with an error-raising validator function."
+  [validate! peg]
+  ~{:pattern ,peg
+    :main (drop (cmt (capture :pattern) ,validate!))})
+
 (def ipv4
   '{:digit (range "09")
     :0-4 (range "04")
@@ -22,29 +28,25 @@
     :ws ,ws
     :main (sequence (any :ws) :comment)})
 
-(defn validate-hostname!
-  "In context of existing parser, validate hostname or raise an error."
-  [hostname]
-  (if-not (and (<= (length hostname) 63)
-               (peg/match '(range "az" "AZ") hostname)
-               (not (string/has-suffix? "-" hostname)))
-    (error (string "invalid name in hostname: " hostname))
-    hostname))
-
 (def hostname
-  ~{:hostname (some (choice (range "az" "AZ" "09") "-"))
-    :main (drop (cmt (capture :hostname) ,validate-hostname!))})
+  (peg!
+   (fn [hostname]
+     (if-not (and (<= (length hostname) 63)
+                  (peg/match '(range "az" "AZ") hostname)
+                  (not (string/has-suffix? "-" hostname)))
+       (error (string "invalid name in hostname: " hostname))
+       hostname))
 
-(defn validate-domain-length!
-  "In context of existing parser, validate domain name or raise an error."
-  [domain]
-  (if-not (<= (length domain) 253)
-    (error (string "domain is too long: " domain))
-    domain))
+   '(some (choice (range "az" "AZ" "09") "-"))))
 
 (def domain
-  ~{:domain (sequence ,hostname (some (sequence "." ,hostname)))
-    :main (drop (cmt (capture :domain) ,validate-domain-length!))})
+  (peg!
+   (fn [domain]
+     (if-not (<= (length domain) 253)
+       (error (string "domain is too long: " domain))
+       domain))
+
+   ~(sequence ,hostname (some (sequence "." ,hostname)))))
 
 (def host-line
   ~{:comment ,comment
