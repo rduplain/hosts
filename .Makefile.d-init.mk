@@ -1,7 +1,7 @@
 __FILE__ := $(abspath $(lastword $(MAKEFILE_LIST)))
 
 MAKEFILE_D_URL := https://github.com/rduplain/Makefile.d.git
-MAKEFILE_D_REV := v1.2 # Use --ref instead of --tag below if untagged.
+MAKEFILE_D_REV := v1.2.1 # Use --ref instead of --tag below if untagged.
 
 ifeq ($(QWERTY_SH),)
 QWERTY_SH := curl -sSL qwerty.sh | sh -s -
