@@ -110,6 +110,13 @@ With [Janet](https://janet-lang.org/) installed, build and test:
 jpm test
 ```
 
+On a Unix-like system, just run `make` to install a project-local Janet,
+install dependencies, then build and test the project, all in one command:
+
+```
+make
+```
+
 The `build/` directory contains the `jpm build` (called by `jpm test`) output
 of a redistributable binary for the current platform.
 
