@@ -17,9 +17,9 @@
   [command patt]
   ~(with-output ,command
      (unless (string/find ,patt output)
-       (print) (print "command:") (print ,command)
-       (print) (print "output:") (print output)
-       (print "expected to contain:") (print ,patt) (print)
+       (print "command: " ,command "\n"
+              "output:\n" output "\n"
+              "expected to contain:\n" ,patt "\n")
        (error "output does not contain expected content"))))
 
 (defmacro assert-output
@@ -27,9 +27,9 @@
   [command expected]
   ~(with-output ,command
      (unless (= (string/trim output) (string/trim ,expected))
-       (print) (print "command:") (print ,command)
-       (print) (print "output:") (print output)
-       (print "expected:") (print ,expected) (print)
+       (print "command: " ,command "\n"
+              "output:\n" output "\n"
+              "expected:\n" ,expected "\n")
        (error "output does not match"))))
 
 (defn- test-hosts

@@ -3,9 +3,8 @@
 (let [arr @[0 1 2 3]
       head (array/lpop arr)]
   (unless (deep= arr @[1 2 3])
-    (error (string "unexpected arr: @["
-                   (string/join (map string arr) " ") "]")))
-  (unless (= head 0) (error (string "unexpected head: " head))))
+    (error (string/format "unexpected arr: %q" arr)))
+  (unless (= head 0) (error (string/format "unexpected head: %q" head))))
 
 (case (os/which)
   :windows

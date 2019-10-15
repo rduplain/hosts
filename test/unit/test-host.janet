@@ -37,13 +37,13 @@
         record-fields (fields record)]
 
     (unless (deep= record expected-record)
-      (print) (print "record:") (pp record)
-      (print "expected-record:") (pp expected-record) (print)
+      (printf "record:\n%q\n" record)
+      (printf "expected-record:\n%q\n" expected-record)
       (error "unexpected result in parsing"))
 
     (unless (deep= record-fields expected-record-fields)
-      (print) (print "record-fields:") (pp record-fields)
-      (print "expected-record-fields:") (pp expected-record-fields) (print)
+      (printf "record-fields:\n%q\n" record-fields)
+      (printf "expected-record-fields:\n%q\n" expected-record-fields)
       (error "unexpected fields result"))))
 
 (defmacro catch-error
@@ -69,10 +69,9 @@
 (loop [{:line line :error expected} :in failure-cases]
   (let [result (catch-error (parse line))]
     (unless (= result expected)
-      (print (string "\nline:\n" line
-                     "\nexpected:\n" expected
-                     "\nresult:\n" result
-                     "\n"))
+      (print (string "line:\n" line "\n"
+                     "expected:\n" expected "\n"
+                     "result:\n" result))
       (error "expected a specific error"))))
 
 (def add-host-cases
@@ -97,6 +96,6 @@
         :result expected} :in add-host-cases]
   (let [result (add-host record host delimiter)]
     (unless (deep= result expected)
-      (print) (print "result:") (pp result)
-      (print "expected:") (pp expected) (print)
+      (printf "result:\n%q\n" result)
+      (printf "expected:\n%q\n" expected)
       (error "unexpected result in add-host"))))
