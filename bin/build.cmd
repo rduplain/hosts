@@ -38,3 +38,12 @@ if exist .\build\hosts.exe ( call del .\build\hosts.exe )
 
 call jpm build
 call jpm test
+
+REM - Primary batch program exit.
+if %ERRORLEVEL% equ 0 (
+  echo Complete.
+  exit /b 0
+) else (
+  echo Fail.
+  exit /B 1
+)
