@@ -1,49 +1,91 @@
-@ECHO OFF
+@echo off
 
 REM - Build on Windows.
 REM
 REM   Requires:
 REM
-REM   * `janet` and `jpm` - https://janet-lang.org/
 REM   * `git` - https://git-scm.com/
+REM
+REM   Builds prerequisites, as needed:
+REM
+REM   * `janet` and `jpm` - https://janet-lang.org/
 
+set PATH=%cd%\deps\janet\dist;%PATH%
 
-REM - In Janet v1.3.1, `jpm deps` ends in error "cannot open ./project.janet".
-REM   jpm deps
+set janet=https://github.com/janet-lang/janet.git
+set janet_version=v1.3.1
 
-set argparse=https://github.com/janet-lang/argparse.git
+set JANET_PATH=%cd%\deps\modules
+set JANET_DIST=%cd%\deps\janet\dist
+set JANET_HEADERPATH=%JANET_DIST%
+set JANET_BINPATH=%JANET_DIST%
+set JANET_LIBPATH=%JANET_DIST%
 
-call janet -e "(import argparse :exit true)"
+if not exist %JANET_PATH% (
+  call mkdir %JANET_PATH%
+)
 
+REM - Find/Build Janet.
+call echo Checking Janet on PATH ...
+call :janet_version %janet_version%
 if %ERRORLEVEL% neq 0 (
 
+  call echo Building Janet ...
   if not exist deps (
     call mkdir deps
   )
   cd deps
-
-  if not exist argparse (
-    call git clone --depth 1 %argparse%
+  if not exist janet (
+    call git clone %janet%
   )
-  cd argparse
-  call jpm install
-  cd ..
+  cd janet
 
+  call git remote update
+  call git checkout %janet_version%
+  call build_win dist
+
+  cd ..
   cd ..
 
 )
 
+call :janet_version %janet_version%
+if %ERRORLEVEL% neq 0 (
+  call echo Janet %janet_version% not found.
+  exit /b 1
+)
+
+REM - echo Janet %janet_version%
+call echo | set /p =Janet
+call janet -e "(print \" v\" janet/version)"
+
+call janet .\deps\janet\dist\jpm deps
+
 REM - Ensure that the build does not go stale.
 if exist .\build\hosts.exe ( call del .\build\hosts.exe )
 
-call jpm build
-call jpm test
+call janet .\deps\janet\dist\jpm build
+call janet .\deps\janet\dist\jpm test
 
 REM - Primary batch program exit.
 if %ERRORLEVEL% equ 0 (
-  echo Complete.
+  call echo Complete.
   exit /b 0
 ) else (
-  echo Fail.
+  call echo Fail.
   exit /B 1
+)
+
+REM - Emulate a function to check the Janet version.
+:janet_version
+set version=%1
+if "%version%" == "" (
+  call echo Error. Provide version when calling :janet_version.
+  exit /b 2
+)
+for /f %%i in ('janet -e "(print \"v\" janet/version)"') do set result=%%i
+if "%result%" == "%version%" (
+  exit /b 0
+) else (
+  exit /b 1
 )
