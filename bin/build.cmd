@@ -33,5 +33,8 @@ if %ERRORLEVEL% neq 0 (
 
 )
 
+REM - Ensure that the build does not go stale.
+if exist .\build\hosts.exe ( call del .\build\hosts.exe )
+
 call jpm build
 call jpm test
