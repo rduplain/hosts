@@ -21,7 +21,7 @@
   '{:hex (range "09" "af" "AF")
     :main (sequence (some (choice :hex ":" ".")))})
 
-(def ws '(set " \t"))
+(def ws '(set " \t\r"))
 
 (def comment
   ~{:comment (* "#" (any (if-not (+ "\n" -1) 1)))

@@ -26,7 +26,9 @@
   "Run command, assert that its (trimmed) output is as (trimmed) expected."
   [command expected]
   ~(with-output ,command
-     (unless (= (string/trim output) (string/trim ,expected))
+     (unless (= (string/trim ,expected) (->> output
+                                             (string/replace-all "\r" "")
+                                             (string/trim)))
        (print "command: " ,command "\n"
               "output:\n" output "\n"
               "expected:\n" ,expected "\n")
