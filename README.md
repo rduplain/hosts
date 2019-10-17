@@ -1,5 +1,7 @@
 ## hosts: Build a hosts (/etc/hosts) file from multiple sources.
 
+### Overview
+
 `hosts` is a command-line tool to build a hosts (/etc/hosts) file from multiple
 sources.
 
