@@ -14,6 +14,13 @@ matrix:
         directories:
           - .Makefile.d
           - .reqd
+    - os: windows
+      language: c
+      script:
+        - ./bin/build.cmd
+      cache:
+        directories:
+          - deps
 notifications:
   email:
     on_success: never
