@@ -1,5 +1,8 @@
 ## hosts: Build a hosts (/etc/hosts) file from multiple sources.
 
+[![Build Status][build]](https://travis-ci.org/rduplain/hosts)
+
+
 ### Overview
 
 `hosts` is a command-line tool to build a hosts (/etc/hosts) file from multiple
@@ -127,6 +130,8 @@ of a redistributable binary for the current platform.
 
 
 ### Meta
+
+[build]: https://travis-ci.org/rduplain/hosts.svg?branch=master
 
 Copyright (c) 2019, R. DuPlain. All rights reserved.
 BSD 2-Clause License.
