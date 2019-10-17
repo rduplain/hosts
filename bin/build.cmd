@@ -5,6 +5,8 @@ REM
 REM   Requires:
 REM
 REM   * `git` - https://git-scm.com/
+REM   * Build Tools for Visual Studio - Find "Build Tools" on
+REM     https://visualstudio.microsoft.com/downloads/
 REM
 REM   Builds prerequisites, as needed:
 REM
