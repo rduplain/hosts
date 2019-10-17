@@ -1,0 +1,19 @@
+matrix:
+  include:
+    - os: linux
+      language: c
+      script: make
+      cache:
+        directories:
+          - .Makefile.d
+          - .reqd
+    - os: osx
+      language: c
+      script: make
+      cache:
+        directories:
+          - .Makefile.d
+          - .reqd
+notifications:
+  email:
+    on_success: never
