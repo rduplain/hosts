@@ -1,0 +1,55 @@
+unix_template: &UNIX_TEMPLATE
+  makefile_d_cache:
+    folder: .Makefile.d
+  reqd_cache:
+    folder: .reqd
+  script: $MAKE
+  artifacts:
+    path: ./build/hosts
+
+task:
+  name: GNU/Linux
+  env:
+    MAKE: make
+  container:
+    image: gcc:latest
+  <<: *UNIX_TEMPLATE
+
+task:
+  name: Mac OS X
+  env:
+    MAKE: make
+  osx_instance:
+    image: mojave-base
+  <<: *UNIX_TEMPLATE
+
+task:
+  name: FreeBSD
+  env:
+    MAKE: gmake
+  freebsd_instance:
+    matrix:
+      - image: freebsd-11-3-stable-amd64-v20190801
+      - image_family: freebsd-13-0-snap
+  preinstall_script:
+    - yes y | pkg update
+    - pkg install -y gmake git
+    - /etc/rc.d/ldconfig start
+  jpm_deps_fix_script:
+    - gmake janet-command
+    - mkdir -p deps
+    - cd deps; git clone https://github.com/janet-lang/argparse.git
+    - cd deps/argparse; \
+      ../../.reqd/opt/janet/bin/janet ../../.reqd/opt/janet/bin/jpm install
+  <<: *UNIX_TEMPLATE
+
+task:
+  name: Windows
+  windows_container:
+    image: cirrusci/windowsservercore:cmake
+    os_version: 2019
+  deps_cache:
+    folder: deps
+  script: .\bin\build.cmd
+  artifacts:
+    path: .\build\hosts.exe
