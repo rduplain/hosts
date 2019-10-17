@@ -1,6 +1,6 @@
 @echo off
 
-REM - Build on Windows.
+REM - Build on Windows, in cmd.exe or a Developer Command Prompt.
 REM
 REM   Requires:
 REM
@@ -10,10 +10,37 @@ REM   Builds prerequisites, as needed:
 REM
 REM   * `janet` and `jpm` - https://janet-lang.org/
 
-set PATH=%cd%\deps\janet\dist;%PATH%
-
 set janet=https://github.com/janet-lang/janet.git
 set janet_version=v1.3.1
+
+set arch=x86
+
+set PATH_ORIGINAL=%PATH%
+
+if not defined VCINSTALLDIR (
+  SETLOCAL ENABLEDELAYEDEXPANSION
+  for %%f in (
+    "Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build"
+    "Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build"
+    "Microsoft Visual Studio 15.0\VC"
+    "Microsoft Visual Studio 14.0\VC"
+    "Microsoft Visual Studio 13.0\VC"
+    "Microsoft Visual Studio 12.0\VC"
+  ) do (
+    set vcvarsall="%PROGRAMFILES(X86)%\%%~f\vcvarsall.bat"
+    if exist !vcvarsall! (
+      echo Using !vcvarsall! ...
+      call !vcvarsall! %arch%
+      goto :have_visual_studio
+    )
+  )
+  echo Unable to find Visual Studio tools.
+  exit /b 1
+)
+
+:have_visual_studio
+
+set PATH=%cd%\deps\janet\dist;%PATH%;%PATH_ORIGINAL%
 
 set JANET_PATH=%cd%\deps\modules
 set JANET_DIST=%cd%\deps\janet\dist
@@ -42,6 +69,7 @@ if %ERRORLEVEL% neq 0 (
 
   call git remote update
   call git checkout %janet_version%
+  call build_win
   call build_win dist
 
   cd ..
