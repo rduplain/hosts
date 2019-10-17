@@ -62,7 +62,10 @@ call janet -e "(print \" v\" janet/version)"
 call janet .\deps\janet\dist\jpm deps
 
 REM - Ensure that the build does not go stale.
-if exist .\build\hosts.exe ( call del .\build\hosts.exe )
+if exist .\build\*.exe (
+  echo Removing previous build: .\build\*.exe ...
+  call del .\build\*.exe
+)
 
 call janet .\deps\janet\dist\jpm build
 call janet .\deps\janet\dist\jpm test
