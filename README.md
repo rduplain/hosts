@@ -28,7 +28,9 @@ Use cases:
 * Create an unpublished alias for an existing host, by running a script as a
   scheduled task (i.e. cron) to perform a DNS query and update /etc/hosts with
   `hosts -f /etc/hosts -s "<ip> <domain>"`. This is particularly useful for
-  not-yet-published domains which are under development.
+  not-yet-published domains which are under development, and for moving aliases
+  from program-local configurations like `~/.ssh/config` to system-wide aliases
+  available to all programs.
 * Coordinate hosts with DNS discovery without a name server, by distributing a
   hosts file which then overlays the existing /etc/hosts file with `hosts -f
   /etc/hosts -f <file>`. This provides a minimalist approach to service
