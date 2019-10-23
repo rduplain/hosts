@@ -11,9 +11,14 @@ test: build | jpm-command
 clean:
 	rm -fr build # Keep .Makefile.d and .reqd.
 
+MAKEFILE := $(lastword $(MAKEFILE_LIST))
+
 include .Makefile.d-init.mk
 include .Makefile.d/janet.mk
 
-$(exe): $(src)
+src+ := $(src)
+src+ += $(MAKEFILE)
+
+$(exe): $(src+)
 	@rm -f $@
 	@$(JPM) build
