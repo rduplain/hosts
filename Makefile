@@ -15,4 +15,5 @@ include .Makefile.d-init.mk
 include .Makefile.d/janet.mk
 
 $(exe): $(src)
+	@rm -f $@
 	@$(JPM) build
