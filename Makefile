@@ -20,6 +20,7 @@ src+ := $(src)
 src+ += $(MAKEFILE)
 src+ += .git/HEAD
 src+ += $(shell git branch --format=".git/%(refname)" | xargs ls 2>/dev/null)
+src+ += $(shell find .git/refs/tags -maxdepth 1)
 
 $(exe): $(src+)
 	@rm -f $@
