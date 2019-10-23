@@ -34,6 +34,16 @@
               "expected:\n" ,expected "\n")
        (error "output does not match"))))
 
+(defmacro assert-match
+  "Run command, assert that its output matches given grammar."
+  [command patt]
+  ~(with-output ,command
+     (unless (peg/match ,patt output)
+       (print "command: " ,command "\n"
+              "output:\n" output "\n"
+              "expected to match:\n" (string/format "%q" ,patt) "\n")
+       (error "output does not match expected pattern"))))
+
 (defn- test-hosts
   "Test hosts invocation with `exe` as prefix to test command-line strings."
   [exe]
@@ -53,6 +63,14 @@
   (assert-contains
    (hosts "-h")
    "Show this help message.")
+
+  (assert-match
+   (hosts "-v")
+   '(sequence "hosts" (? ".janet") " v"))
+
+  (assert-match
+   (hosts "--version")
+   '(sequence "hosts" (? ".janet") " v"))
 
   (assert-contains
    (hosts "--fake")

@@ -35,6 +35,45 @@
                  (os/basename (dyn :current-file))))
      (do ,;body)))
 
+(defn not-empty
+  "If xs is empty, nil, else xs."
+  [xs]
+  (when (not (empty? xs)) xs))
+
+(defn- sh-redirect
+  "Return sh redirect syntax to capture out/err as specifed in bool arguments."
+  [out err]
+  (let [nullpath (if (os/stat "/dev/null") "/dev/null" "nul")]
+    (cond
+      (and out err) " 2>&1"
+      (and out (not err)) (string " 2>" nullpath)
+      (and (not out) err) (string " 2>&1 1>" nullpath)
+      (and (not out) (not err)) (string " > " nullpath " 2>&1"))))
+
+(defn sh
+  "Execute command (as string), return output as string.
+
+  Options:
+
+  :out true|false       # Capture process stdout, default: true.
+  :err true|false       # Capture process stderr, default: false.
+
+  Notes:
+
+  * Use :out/:err arguments instead of shell redirect syntax in string command.
+  * This does NOT sanitize input to prevent shell injection attacks."
+  [command & options]
+  (def {:out out :err err} (table ;options))
+  (default out true)
+  (default err false)
+  (let [output @""]
+    (with [fd (file/popen (string command (sh-redirect out err)) :r)]
+      (var buf @"")
+      (while buf
+        (buffer/push-string output buf)
+        (set buf (file/read fd 4096)))) # Note: :all never returns nil.
+    (string output)))
+
 (defn slurp!!
   "Like `slurp`, but print to stderr then `os/exit` if file is missing."
   [path &opt message error-code]

@@ -3,6 +3,8 @@
 (import ./host :as host)
 (import ./lang :prefix "")
 
+(def version (-> (sh "git describe --tags --dirty") (string/trim) (not-empty)))
+
 (def usage
   ["Build a hosts (/etc/hosts) file from multiple sources."
 
@@ -20,7 +22,12 @@
    "static"
    {:kind :accumulate
     :short "s"
-    :help "A static hosts entry."}])
+    :help "A static hosts entry."}
+
+   "version"
+   {:kind :flag
+    :short "v"
+    :help "Output version, then exit."}])
 
 (defn parse-and-merge
   "Parse lines in combined hosts file, merging entries as appropriate."
@@ -99,12 +106,18 @@
   "Command-Line Interface."
   [&]
 
+  (setdyn :version version)
+
   (let [args (dyn :args)
         options (argparse/argparse ;usage)]
     (setdyn :prog (os/basename (first args)))
 
     (unless options
       (os/exit 2))
+
+    (when (get options "version")
+      (print (dyn :prog) " " (or (dyn :version) "vUNKNOWN"))
+      (os/exit 0))
 
     (setdyn :delimiter (->> (get options "delimiter")
                             (string/replace "' '" " ")

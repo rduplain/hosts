@@ -58,6 +58,7 @@ Build a hosts (/etc/hosts) file from multiple sources.
  -f, --file VALUE             A hosts file as input.
  -h, --help                   Show this help message.
  -s, --static VALUE           A static hosts entry.
+ -v, --version                Output version, then exit.
 ```
 
 Redirect stdout to write to a file. Example:
