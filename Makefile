@@ -18,6 +18,8 @@ include .Makefile.d/janet.mk
 
 src+ := $(src)
 src+ += $(MAKEFILE)
+src+ += .git/HEAD
+src+ += $(shell git branch --format=".git/%(refname)" | xargs ls 2>/dev/null)
 
 $(exe): $(src+)
 	@rm -f $@
