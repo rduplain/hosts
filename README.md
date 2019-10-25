@@ -117,19 +117,25 @@ References:
 
 ### Development
 
-With [Janet](https://janet-lang.org/) installed, build and test:
+This project provides a single-command build to install a project-local Janet,
+install dependencies, build, and test. On a Unix-like system, just run GNU Make
+(`make`, which is sometimes `gmake` on BSD systems):
+
+```
+make
+```
+
+On Windows:
+
+```
+.\bin\build.cmd
+```
+
+Otherwise, with [Janet](https://janet-lang.org/) installed, build and test:
 
 ```
 [sudo] jpm deps # first time only
 jpm test
-```
-
-On a Unix-like system, just run GNU Make (`make`, which is sometimes `gmake` on
-BSD systems) to install a project-local Janet, install dependencies, then build
-and test the project, all in one command:
-
-```
-make
 ```
 
 The `build/` directory contains the `jpm build` (called by `jpm test`) output
