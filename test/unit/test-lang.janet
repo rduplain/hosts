@@ -87,26 +87,25 @@
   (let [result (->> (apply sh command options)
                     (string/replace-all "\r" ""))]
 
+    (def command-options-result
+      (string "command: " command "\n"
+              "options: " (string/format "%q" options) "\n"
+              "result:\n" result "\n"))
+
     (when patt
       (unless (peg/match patt result)
-        (print "command: " command "\n"
-               "options: " (string/format "%q" options) "\n"
-               "result:\n" result "\n"
+        (print command-options-result
                "expected pattern:\n" (string/format "%q" patt) "\n")
         (error "prefix does not match")))
 
     (when expected
       (unless (= expected result)
-        (print "command: " command "\n"
-               "options: " (string/format "%q" options) "\n"
-               "result:\n" result "\n"
+        (print command-options-result
                "expected:\n" expected "\n")
         (error "output does not match")))
 
     (when prefix
       (unless (string/has-prefix? prefix result)
-        (print "command: " command "\n"
-               "options: " (string/format "%q" options) "\n"
-               "result:\n" result "\n"
+        (print command-options-result
                "expected prefix:\n" prefix "\n")
         (error "prefix does not match")))))
