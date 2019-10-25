@@ -35,16 +35,16 @@
 
 (def sh-cases
   [{:command "echo foo"
-    :output "foo\n"}
+    :match '(sequence "foo" (? " ") "\n")}
 
    {:command "echo foo" :out false
     :output ""}
 
    {:command "echo foo" :out true :err true
-    :output "foo\n"}
+    :match '(sequence "foo" (? " ") "\n")}
 
    {:command "echo foo" :out true :err false
-    :output "foo\n"}
+    :match '(sequence "foo" (? " ") "\n")}
 
    {:command "echo foo" :out false :err true
     :output ""}
@@ -59,10 +59,10 @@
     :output ""}
 
    {:command "git rev-parse DOES_NOT_EXIST_456" :err true
-    :prefix "fatal"}
+    :match '(choice "fatal" "DOES_NOT_EXIST_456")}
 
    {:command "git rev-parse DOES_NOT_EXIST_456" :out true :err true
-    :prefix "fatal"}
+    :match '(choice "fatal" "DOES_NOT_EXIST_456")}
 
    {:command "git rev-parse DOES_NOT_EXIST_456" :out true :err false
     :output "DOES_NOT_EXIST_456\n"}
@@ -76,6 +76,7 @@
 (loop [{:command command
         :out out
         :err err
+        :match patt
         :output expected
         :prefix prefix} :in sh-cases]
 
@@ -86,6 +87,13 @@
   (let [result (->> (apply sh command options)
                     (string/replace-all "\r" ""))]
 
+    (when patt
+      (unless (peg/match patt result)
+        (print "command: " command "\n"
+               "options: " (string/format "%q" options) "\n"
+               "result:\n" result "\n"
+               "expected pattern:\n" (string/format "%q" patt) "\n")
+        (error "prefix does not match")))
 
     (when expected
       (unless (= expected result)

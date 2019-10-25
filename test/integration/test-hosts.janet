@@ -66,11 +66,11 @@
 
   (assert-match
    (hosts "-v")
-   '(sequence "hosts" (? ".janet") " v"))
+   '(sequence "hosts" (? ".exe") (? ".janet") " v"))
 
   (assert-match
    (hosts "--version")
-   '(sequence "hosts" (? ".janet") " v"))
+   '(sequence "hosts" (? ".exe") (? ".janet") " v"))
 
   (assert-contains
    (hosts "--fake")
