@@ -61,6 +61,12 @@ Build a hosts (/etc/hosts) file from multiple sources.
  -v, --version                Output version, then exit.
 ```
 
+Example command to write the IPv4 address of `example.net` as `server`:
+
+```sh
+hosts -f /etc/hosts -s "$(dig example.net A +short | grep '^[.0-9]*$')  server"
+```
+
 Redirect stdout to write to a file. Example:
 
 ```
