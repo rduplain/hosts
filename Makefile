@@ -12,6 +12,7 @@ clean:
 	rm -fr build # Keep .Makefile.d and .reqd.
 
 MAKEFILE := $(lastword $(MAKEFILE_LIST))
+JANET_REV := v1.4.0
 
 include .Makefile.d-init.mk
 include .Makefile.d/janet.mk
@@ -25,3 +26,5 @@ src+ += $(shell find .git/refs/tags -maxdepth 1)
 $(exe): $(src+)
 	@rm -f $@
 	@$(JPM) build
+
+$(JANET): $(MAKEFILE)
