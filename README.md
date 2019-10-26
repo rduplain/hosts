@@ -54,7 +54,7 @@ usage: hosts [option] ...
 Build a hosts (/etc/hosts) file from multiple sources.
 
  Optional:
- -d, --delimiter VALUE=' '    Whitespace to append hostname to line.
+ -d, --delimiter VALUE=' '    Whitespace to append hostname.
  -f, --file VALUE             A hosts file as input.
  -h, --help                   Show this help message.
  -s, --static VALUE           A static hosts entry.

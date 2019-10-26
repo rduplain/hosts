@@ -11,7 +11,7 @@
    "delimiter"
    {:kind :option
     :short "d"
-    :help "Whitespace to append hostname to line."
+    :help "Whitespace to append hostname."
     :default "' '"} # Quoted for visibility in help text.
 
    "file"
