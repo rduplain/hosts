@@ -13,6 +13,15 @@ stand-alone `hosts` executable on all major platforms (GNU/Linux, Mac OS X,
 BSD, Windows).
 
 
+### Installation
+
+The `hosts` binary is a standalone executable. Download a suitable binary from
+[project releases][releases], or review [_Development_](#development) to build
+the executable locally. Simply add the executable to the system/shell `PATH`.
+
+[releases]: https://github.com/rduplain/hosts/releases
+
+
 ### Motivation
 
 A hosts file itself is simple: provide static data on how to resolve a given
