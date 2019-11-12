@@ -13,7 +13,8 @@ REM
 REM   * `janet` and `jpm` - https://janet-lang.org/
 
 set janet=https://github.com/janet-lang/janet.git
-set janet_version=v1.4.0
+set janet_version=c9521e0
+set janet_version_check=v1.5.0
 
 set arch=x86
 
@@ -56,7 +57,7 @@ if not exist %JANET_PATH% (
 
 REM - Find/Build Janet.
 call echo Checking Janet on PATH ...
-call :janet_version %janet_version%
+call :janet_version %janet_version_check%
 if %ERRORLEVEL% neq 0 (
 
   call echo Building Janet ...
@@ -79,9 +80,9 @@ if %ERRORLEVEL% neq 0 (
 
 )
 
-call :janet_version %janet_version%
+call :janet_version %janet_version_check%
 if %ERRORLEVEL% neq 0 (
-  call echo Janet %janet_version% not found.
+  call echo Janet %janet_version% not found, checking for %janet_version_check%.
   exit /b 1
 )
 

@@ -4,12 +4,8 @@
   "Execute command (as string), capture stdout/stderr in unhygienic `output`."
   [command & body]
   (with-syms [fd buf]
-    ~(let [output @""]
-       (with [,fd (file/popen (string ,command " 2>&1") :r)]
-         (var ,buf @"")
-         (while ,buf
-           (buffer/push-string output ,buf)
-           (set ,buf (file/read ,fd 4096)))) # Note: :all never returns nil.
+    ~(let [output (with [,fd (file/popen (string ,command " 2>&1") :r)]
+                        (file/read ,fd :all))]
        ,;body)))
 
 (defmacro assert-contains

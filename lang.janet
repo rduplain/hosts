@@ -66,13 +66,8 @@
   (def {:out out :err err} (table ;options))
   (default out true)
   (default err false)
-  (let [output @""]
-    (with [fd (file/popen (string command (sh-redirect out err)) :r)]
-      (var buf @"")
-      (while buf
-        (buffer/push-string output buf)
-        (set buf (file/read fd 4096)))) # Note: :all never returns nil.
-    (string output)))
+  (with [fd (file/popen (string command (sh-redirect out err)) :r)]
+        (file/read fd :all)))
 
 (defn slurp!!
   "Like `slurp`, but print to stderr then `os/exit` if file is missing."
