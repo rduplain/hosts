@@ -101,7 +101,7 @@ more aliases.
 
 As `hosts` processes input hosts lines, it will:
 
-* **Preserve order.** Input reads line by line, left to right in the
+* **Preserve order.** Read input line by line, left to right in the
   command-line arguments. Any line matching a previous line, either by IP or
   hostname alias, will update the fields of the previous line instead of
   writing to output.
