@@ -1,6 +1,8 @@
 (declare-project
  :name "hosts"
  :description "Build a hosts (/etc/hosts) file from multiple sources."
+ :license "BSD"
+ :url "https://github.com/rduplain/hosts"
  :dependencies
  [{:repo "https://github.com/janet-lang/argparse.git" :tag "4f99020"}])
 
