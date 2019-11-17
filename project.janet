@@ -7,8 +7,8 @@
  [{:repo "https://github.com/janet-lang/argparse.git" :tag "4f99020"}])
 
 (declare-executable
-  :name "hosts"
-  :entry "hosts.janet")
+ :name "hosts"
+ :entry "hosts.janet")
 
 (defn os/join
   "Join filepath parts according to current OS."
@@ -29,7 +29,7 @@
     (when (not= 0 result)
       (os/exit result))))
 
-# Override `jpm test` to run test-suite.janet, which runs tests in order.
+# Override `jpm test` to run test-suite.janet, in order to runs tests in order.
 (phony "test" ["build"]
        (let [suite (os/join (os/cwd) "test" "test-suite.janet")]
          (unless (os/stat suite)
