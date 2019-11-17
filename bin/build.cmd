@@ -13,8 +13,8 @@ REM
 REM   * `janet` and `jpm` - https://janet-lang.org/
 
 set janet=https://github.com/janet-lang/janet.git
-set janet_version=c9521e0
-set janet_version_check=v1.5.0
+set janet_version=v1.5.1
+set janet_version_check=v1.5.1
 
 set arch=x86
 
