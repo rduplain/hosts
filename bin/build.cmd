@@ -99,7 +99,6 @@ if exist .\build\*.exe (
   call del .\build\*.exe
 )
 
-call janet .\deps\janet\dist\jpm build
 call janet .\deps\janet\dist\jpm test
 
 REM - Primary batch program exit.
