@@ -16,6 +16,7 @@ set janet=https://github.com/janet-lang/janet.git
 set janet_version=v1.5.1
 set janet_version_check=%janet_version%
 
+REM - x86 or x64? Clean .\deps\ when changing this value.
 set arch=x86
 
 set PATH_ORIGINAL=%PATH%
