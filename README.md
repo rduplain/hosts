@@ -155,5 +155,5 @@ of a redistributable binary for the current platform.
 
 [build]: https://travis-ci.org/rduplain/hosts.svg?branch=master
 
-Copyright (c) 2019, R. DuPlain. All rights reserved.
+Copyright (c) 2019-2020, R. DuPlain. All rights reserved.
 BSD 2-Clause License.
