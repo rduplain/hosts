@@ -27,14 +27,6 @@
       (print message))
     (os/exit error-code)))
 
-(defmacro if-main
-  "Evaluate body if Janet is running current .janet file as a script."
-  [& body]
-  ~(when (and (dyn :args) (first (dyn :args)) (dyn :current-file)
-              (= (os/basename (first (dyn :args)))
-                 (os/basename (dyn :current-file))))
-     (do ,;body)))
-
 (defn not-empty
   "If xs is empty, nil, else xs."
   [xs]

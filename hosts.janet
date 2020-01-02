@@ -149,5 +149,3 @@
         (parse-and-merge)
         (string/join "\n")
         (print))))
-
-(if-main (main))
