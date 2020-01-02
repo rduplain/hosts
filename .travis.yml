@@ -16,6 +16,9 @@ matrix:
           - .reqd
     - os: windows
       language: c
+      before_script:
+        - export CC=CL.exe
+        - export CC_FOR_BUILD="$CC"
       script:
         - ./bin/build.cmd
       cache:
