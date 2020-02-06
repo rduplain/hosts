@@ -109,3 +109,17 @@
         (print command-options-result
                "expected prefix:\n" prefix "\n")
         (error "prefix does not match")))))
+
+(def string-includes-cases
+  {["string" "str"] true
+   ["string" "ing"] true
+   ["string" "tr"] true
+   ["string" "t"] true
+   ["string" ""] true
+   ["string" "nope"] false})
+
+(loop [[[s substr] included] :pairs string-includes-cases]
+  (unless (= included (string/includes? s substr))
+    (error (string/format "expected (string/includes? %q %q) to be %q"
+                          s substr
+                          included))))

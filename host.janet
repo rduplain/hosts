@@ -92,6 +92,21 @@
     (filter (fn [item] (not (peg/match ~(choice ,comment (some ,ws)) item)))
             parsed)))
 
+(defn ipv4?
+  "If value is IPv4-formatted address string, true, else false."
+  [value]
+  (if (peg/match ~(sequence (some ,ipv4) -1) value)
+    true
+    false))
+
+(defn ipv6?
+  "If value appears to be a IPv6-formatted address string, true, else false."
+  [value]
+  (if (and (string/includes? value ":")
+           (peg/match ~(sequence (some ,ipv6-ish) -1) value))
+    true
+    false))
+
 (defn add-host
   "Append host to record, inserting before the host-line comment (if exists)."
   [record host &opt delimiter]

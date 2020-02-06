@@ -74,6 +74,24 @@
                      "result:\n" result))
       (error "expected a specific error"))))
 
+(def pred-cases
+  [{:value "" :ipv4? false :ipv6? false}
+   {:value "localhost" :ipv4? false :ipv6? false}
+   {:value "127.0.0.1" :ipv4? true :ipv6? false}
+   {:value "127.0.0.1\tlocalhost" :ipv4? false :ipv6? false}
+   {:value "::1" :ipv4? false :ipv6? true}
+   {:value "::1\tlocalhost" :ipv4? false :ipv6? false}])
+
+(loop [{:value value :ipv4? ipv4-expected :ipv6? ipv6-expected} :in pred-cases]
+  (let [ipv4-result (ipv4? value)
+        ipv6-result (ipv6? value)]
+    (unless (and (= ipv4-result ipv4-expected)
+                 (= ipv6-result ipv6-expected))
+      (print (string "value: " value "\n"
+                     "ipv4? " ipv4-result ", expected: " ipv4-expected "\n"
+                     "ipv6? " ipv6-result ", expected: " ipv6-expected "\n"))
+      (error "unexpected IPv4/IPv6 predicate result"))))
+
 (def add-host-cases
   [{:record @["127.0.0.1" " " "localhost"]
     :host "localhost.local"

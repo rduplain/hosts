@@ -67,3 +67,10 @@
   (try
     (slurp path)
     ([err] (die!! (if message (string message ": " path) err) error-code))))
+
+(defn string/includes?
+  "If s includes substr, true, else false."
+  [s substr]
+  (if (or (= substr "") (string/find substr s))
+    true
+    false))
