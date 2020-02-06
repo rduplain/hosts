@@ -12,7 +12,7 @@ REM   Builds prerequisites, as needed:
 REM
 REM   * `janet` and `jpm` - https://janet-lang.org/
 
-set janet=https://github.com/janet-lang/janet.git
+set janet_url=https://github.com/janet-lang/janet.git
 set janet_version=v1.6.0
 set janet_version_check=%janet_version%
 
@@ -67,7 +67,7 @@ if %ERRORLEVEL% neq 0 (
   )
   cd deps
   if not exist janet (
-    call git clone %janet%
+    call git clone %janet_url%
   )
   cd janet
 
