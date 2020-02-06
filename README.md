@@ -112,6 +112,11 @@ As `hosts` processes input hosts lines, it will:
   presumed to have the latest information on the IP for all aliases in the
   match; the output includes that IP for all matched aliases.
 
+A hosts file can specify both IPv4 and IPv6 addresses for a hostname. In
+effect, IPv4 and IPv6 are separate and distinct namespaces within the hosts
+file. When matching IP addresses, `hosts` tracks IPv4 and IPv6 addresses
+separately.
+
 While `hosts` can reliably rewrite hosts data in-place, repeat autonomous calls
 to `hosts` benefit from writing to an output file which is not ultimately used
 as an input file in a later invocation. This will avoid the case where a

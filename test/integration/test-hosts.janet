@@ -110,7 +110,7 @@
          "192.168.1.101   another another.local server.another.local\n"
          "\n"
          "# IPv6\n"
-         "::1             ip6-localhost ip6-loopback # IPv6 localhost\n"
+         "::1             localhost ip6-localhost ip6-loopback # IPv6 localhost\n"
          "fe00::0         ip6-localnet\n"
          "ff00::0         ip6-mcastprefix\n"
          "ff02::1         ip6-allnodes\n"

@@ -36,9 +36,13 @@
 
   (def parsed @[])
 
-  (def host-ip @{})
-  (def host-aliases @{})
-  (def ip-aliases @{})
+  (def relation
+    {:ipv4 {:host-ip @{}
+            :host-aliases @{}
+            :ip-aliases @{}}
+     :ipv6 {:host-ip @{}
+            :host-aliases @{}
+            :ip-aliases @{}}})
 
   # Parse each line, index IP address by host, normalize aliases.
   (loop [line :in lines]
@@ -49,6 +53,10 @@
       (when record
         (let [hosts (host/fields record) # (first hosts) => ip
               ip (array/lpop hosts)
+              {:host-ip host-ip
+               :host-aliases host-aliases
+               :ip-aliases ip-aliases} (get relation
+                                            (if (host/ipv4? ip) :ipv4 :ipv6))
               aliases (or (get host-aliases (first hosts)) @{})]
 
           (loop [host :in hosts]
@@ -70,8 +78,10 @@
   (def processed @[])
 
   (def aliases-visit @{})
-  (defn aliases/visit [aliases] (put aliases-visit (hash aliases) true))
-  (defn aliases/visited? [aliases] (get aliases-visit (hash aliases)))
+  (defn aliases/visit
+    [ns aliases]
+    (put aliases-visit (hash [ns aliases]) true))
+  (defn aliases/visited? [ns aliases] (get aliases-visit (hash [ns aliases])))
 
   # Update IP field, merge aliases, skip duplicate lines/records.
   (loop [i :range [0 (length lines)]]
@@ -79,14 +89,17 @@
           record (parsed i)]
       (if record
         (let [hosts (host/fields record) # (first hosts) => ip
-              ip (do
-                   (array/lpop hosts)
-                   (get host-ip (first hosts)))
+              record-ip (array/lpop hosts)
+              ip-version (if (host/ipv4? record-ip) :ipv4 :ipv6)
+              {:host-ip host-ip
+               :host-aliases host-aliases
+               :ip-aliases ip-aliases} (get relation ip-version)
+              ip (get host-ip (first hosts))
               aliases (or (get host-aliases (first hosts)) @{})]
 
           (array/remove record 0) (array/insert record 0 ip)
 
-          (when (not (aliases/visited? aliases))
+          (when (not (aliases/visited? ip-version aliases))
             (def host-visit @{})
             (defn host/visit [host] (put host-visit host true))
             (defn host/visited? [host] (get host-visit host))
@@ -96,7 +109,7 @@
                 (host/add-host record host delimiter)
                 (host/visit host)))
             (array/push processed (string/join record))
-            (aliases/visit aliases)))
+            (aliases/visit ip-version aliases)))
 
         (array/push processed line))))
 
