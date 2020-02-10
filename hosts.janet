@@ -104,7 +104,7 @@
             (defn host/visit [host] (put host-visit host true))
             (defn host/visited? [host] (get host-visit host))
             (map (fn [host] (host/visit host)) hosts)
-            (loop [host :in (sorted (keys aliases) <)]
+            (loop [host :in (sorted (keys aliases))]
               (unless (host/visited? host)
                 (host/add-host record host delimiter)
                 (host/visit host)))
