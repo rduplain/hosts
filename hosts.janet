@@ -1,3 +1,5 @@
+# Build a hosts (/etc/hosts) file from multiple sources.
+
 (import argparse)
 
 (import ./host :as host)

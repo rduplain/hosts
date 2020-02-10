@@ -1,3 +1,5 @@
+# Parse a line specifying a host in a hosts (/etc/hosts) file.
+
 (import ./lang :prefix "")
 
 (defn peg!
