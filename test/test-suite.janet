@@ -5,4 +5,5 @@
 
 (run ./unit/test-lang
      ./unit/test-host
+     ./unit/test-hosts
      ./integration/test-hosts)
