@@ -73,6 +73,28 @@
   []
   (:init (table/setproto @{} Hosts)))
 
+(def Tracker
+  "Model to track objects seen, create with `(tracker)`."
+
+  @{:init (fn [self hash-fn]
+            (-> self
+                (put :hash-fn hash-fn)
+                (put :seen @{})))
+
+    :see (fn [self obj]
+           (put (self :seen) ((self :hash-fn) obj) true))
+
+    :seen? (fn [self obj]
+             (if (get (self :seen) ((self :hash-fn) obj))
+               true
+               false))})
+
+(defn tracker
+  "Create an instance of `Tracker` to track seen objects."
+  [&opt hash-fn]
+  (default hash-fn identity)
+  (:init (table/setproto @{} Tracker) hash-fn))
+
 (defn parse-and-merge
   "Parse lines in combined hosts file, merging entries as appropriate."
   [lines &opt delimiter]
@@ -96,9 +118,7 @@
 
   (def processed @[])
 
-  (def ip-visit @{})
-  (defn ip/visit [ip] (put ip-visit ip true))
-  (defn ip/visited? [ip] (get ip-visit ip))
+  (def ip-tracker (tracker))
 
   # Update parsed IP field, merge aliases, skip duplicate lines/records.
   (loop [i :range [0 (length lines)]]
@@ -112,17 +132,15 @@
 
           (array/remove record 0) (array/insert record 0 ip)
 
-          (when (not (ip/visited? ip))
-            (def host-visit @{})
-            (defn host/visit [host] (put host-visit host true))
-            (defn host/visited? [host] (get host-visit host))
-            (map (fn [host] (host/visit host)) hosts)
+          (when (not (:seen? ip-tracker ip))
+            (def host-tracker (tracker))
+            (map (fn [host] (:see host-tracker host)) hosts)
             (loop [host :in aliases]
-              (unless (host/visited? host)
+              (unless (:seen? host-tracker host)
                 (host/add-host record host delimiter)
-                (host/visit host)))
+                (:see host-tracker host)))
             (array/push processed (string/join record))
-            (ip/visit ip)))
+            (:see ip-tracker ip)))
 
         (array/push processed line))))
 
