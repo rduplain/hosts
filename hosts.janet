@@ -61,25 +61,10 @@
                          (:set-hosts self host-ip nil)
                          (apply :update self ip (keys ip-host-set)))))))
 
-    :get-hosts (fn [self ip]
-                 (-> self
-                     (get :ip-hosts)
-                     (get ip @{})))
-
-    :set-hosts (fn [self ip hosts]
-                 (-> self
-                     (get :ip-hosts)
-                     (put ip hosts)))
-
-    :get-ip (fn [self host]
-              (-> self
-                  (get :host-ip)
-                  (get host)))
-
-    :set-ip (fn [self host ip]
-              (-> self
-                  (get :host-ip)
-                  (put host ip)))})
+    :get-hosts (fn [self ip] (get (self :ip-hosts) ip @{}))
+    :set-hosts (fn [self ip hosts] (put (self :ip-hosts) ip hosts))
+    :get-ip (fn [self host] (get (self :host-ip) host))
+    :set-ip (fn [self host ip] (put (self :host-ip) host ip))})
 
 (defn hosts
   "Create an instance of `Hosts` for IP-to-hostname(s) relationships."
