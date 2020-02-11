@@ -108,9 +108,7 @@
   # Parse each line, index IP address by host, normalize aliases.
   (loop [line :in lines]
     (let [record (host/parse!! line)]
-
       (array/push parsed record)
-
       (when record
         (let [hosts (host/fields record) # (first hosts) => ip
               ip (array/lpop hosts)]
