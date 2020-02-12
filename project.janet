@@ -4,7 +4,7 @@
  :license "BSD"
  :url "https://github.com/rduplain/hosts"
  :dependencies
- [{:repo "https://github.com/janet-lang/argparse.git" :tag "4f99020"}])
+ [{:repo "https://github.com/janet-lang/argparse.git" :tag "30acacf"}])
 
 (declare-executable
  :name "hosts"

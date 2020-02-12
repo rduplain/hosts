@@ -169,18 +169,16 @@
     (def lines @[])
 
     # Process sources in order.
-    (loop [arg :in args]
+    (loop [option :in (options :order)]
       (cond
-        (or (= arg "-f")
-            (string/has-prefix? "--file" arg))
+        (= option "file")
         (let [filepath (array/lpop (get options "file"))]
           (->> (slurp!! filepath)
                (string/trim)
                (string/split "\n")
                (array/concat lines)))
 
-        (or (= arg "-s")
-            (string/has-prefix? "--static" arg))
+        (= option "static")
         (let [static (array/lpop (get options "static"))]
           (array/concat lines (string/split "\n" static)))))
 
