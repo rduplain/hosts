@@ -12,33 +12,36 @@
   "Run command, assert that its output contains the given pattern."
   [command patt]
   ~(with-output ,command
-     (unless (string/find ,patt output)
-       (print "command: " ,command "\n"
-              "output:\n" output "\n"
-              "expected to contain:\n" ,patt "\n")
-       (error "output does not contain expected content"))))
+     (assert (string/find ,patt output)
+             (string "\n"
+                     "command: " ,command "\n"
+                     "output:\n" output "\n"
+                     "expected to contain:\n" ,patt "\n"
+                     "output does not contain expected content"))))
 
 (defmacro assert-output
   "Run command, assert that its (trimmed) output is as (trimmed) expected."
   [command expected]
   ~(with-output ,command
-     (unless (= (string/trim ,expected) (->> output
+     (assert (= (string/trim ,expected) (->> output
                                              (string/replace-all "\r" "")
                                              (string/trim)))
-       (print "command: " ,command "\n"
-              "output:\n" output "\n"
-              "expected:\n" ,expected "\n")
-       (error "output does not match"))))
+             (string "\n"
+                     "command: " ,command "\n"
+                     "output:\n" output "\n"
+                     "expected:\n" ,expected "\n"
+                     "output does not match"))))
 
 (defmacro assert-match
   "Run command, assert that its output matches given grammar."
   [command patt]
   ~(with-output ,command
-     (unless (peg/match ,patt output)
-       (print "command: " ,command "\n"
-              "output:\n" output "\n"
-              "expected to match:\n" (string/format "%q" ,patt) "\n")
-       (error "output does not match expected pattern"))))
+     (assert (peg/match ,patt output)
+             (string "\n"
+                     "command: " ,command "\n"
+                     "output:\n" output "\n"
+                     "expected to match:\n" (string/format "%q" ,patt) "\n"
+                     "output does not match expected pattern"))))
 
 (defn- test-hosts
   "Test hosts invocation with `exe` as prefix to test command-line strings."

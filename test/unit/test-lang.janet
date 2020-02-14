@@ -2,21 +2,22 @@
 
 (let [arr @[0 1 2 3]
       head (array/lpop arr)]
-  (unless (deep= arr @[1 2 3])
-    (error (string/format "unexpected arr: %q" arr)))
-  (unless (= head 0) (error (string/format "unexpected head: %q" head))))
+  (assert (deep= arr @[1 2 3])
+          (string/format "unexpected arr: %q" arr))
+  (assert (= head 0)
+          (string/format "unexpected head: %q" head)))
 
 (case (os/which)
   :windows
    (let [filepath "C:\\bin\\prog.exe"
          basename (os/basename filepath)]
-     (unless (= basename "prog.exe")
-       (error (string "unexpected basename for " filepath ": " basename))))
+     (assert (= basename "prog.exe")
+             (string "unexpected basename for " filepath ": " basename)))
 
    (let [filepath "/usr/bin/prog"
          basename (os/basename filepath)]
-     (unless (= basename "prog")
-       (error (string "unexpected basename for " filepath ": " basename)))))
+     (assert (= basename "prog")
+             (string "unexpected basename for " filepath ": " basename))))
 
 (def not-empty-cases
   {"string" true
@@ -28,10 +29,10 @@
 
 (loop [[value not-empty?] :pairs not-empty-cases]
   (if not-empty?
-    (unless (= value (not-empty value))
-      (error (string/format "value expected to be not-empty: %q" value)))
-    (unless (nil? (not-empty value))
-      (error (string/format "value expected to be empty: %q" value)))))
+    (assert (= value (not-empty value))
+            (string/format "value expected to be not-empty: %q" value))
+    (assert (nil? (not-empty value))
+            (string/format "value expected to be empty: %q" value))))
 
 (def sh-cases
   [{:command "echo foo"
@@ -93,22 +94,22 @@
               "result:\n" result "\n"))
 
     (when patt
-      (unless (peg/match patt result)
-        (print command-options-result
-               "expected pattern:\n" (string/format "%q" patt) "\n")
-        (error "prefix does not match")))
+      (assert (peg/match patt result)
+              (string "\n" command-options-result
+                      "expected pattern:\n" (string/format "%q" patt) "\n"
+                      "prefix does not match")))
 
     (when expected
-      (unless (= expected result)
-        (print command-options-result
-               "expected:\n" expected "\n")
-        (error "output does not match")))
+      (assert (= expected result)
+              (string "\n" command-options-result
+                      "expected:\n" expected "\n"
+                      "output does not match")))
 
     (when prefix
-      (unless (string/has-prefix? prefix result)
-        (print command-options-result
-               "expected prefix:\n" prefix "\n")
-        (error "prefix does not match")))))
+      (assert (string/has-prefix? prefix result)
+              (string "\n" command-options-result
+                      "expected prefix:\n" prefix "\n"
+                      "prefix does not match")))))
 
 (def string-includes-cases
   {["string" "str"] true
@@ -119,7 +120,7 @@
    ["string" "nope"] false})
 
 (loop [[[s substr] included] :pairs string-includes-cases]
-  (unless (= included (string/includes? s substr))
-    (error (string/format "expected (string/includes? %q %q) to be %q"
-                          s substr
-                          included))))
+  (assert (= included (string/includes? s substr))
+          (string/format "expected (string/includes? %q %q) to be %q"
+                         s substr
+                         included)))
