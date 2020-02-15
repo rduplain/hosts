@@ -8,9 +8,30 @@ REM   * `git` - https://git-scm.com/
 REM   * Build Tools for Visual Studio - Find "Build Tools" on
 REM     https://visualstudio.microsoft.com/downloads/
 REM
-REM   Builds prerequisites, as needed:
+REM   Automatically builds prerequisites:
 REM
 REM   * `janet` and `jpm` - https://janet-lang.org/
+REM
+REM   The build first compiles a project-local Janet matching JANET_VERSION,
+REM   then runs `jpm deps` on the project to install dependencies in the same
+REM   project-local directory as Janet. While this build.cmd is checking PATH
+REM   for `janet`, a system-installed Janet is not currently supported when
+REM   `jpm deps` is required by the project.
+REM
+REM   This build.cmd has no project-specific details in it, and can be dropped
+REM   in as-is into other Janet projects. It must be checked into version
+REM   control (or otherwise downloaded before the build) in order for
+REM   continuous integration (CI) to have a build entry point.
+REM
+REM   Configure with the "if not defined" environment variables below, each
+REM   having a preset default in build.cmd. Note that Windows batch sets
+REM   variables globally in the calling cmd.exe session, such that repeat calls
+REM   to build.cmd will have whatever value was set on the last run of
+REM   build.cmd. This is an especially important limitation to consider when
+REM   changing variables or pulling a new build.cmd after a previous run.
+REM
+REM   When using an untagged JANET_VERSION, set JANET_VERSION_CHECK to whatever
+REM   version prefix is reported by `janet --version`. For example, "v1.7.0".
 
 REM - Support configuration with environment variables.
 if not defined JANET_URL set JANET_URL=https://github.com/janet-lang/janet.git
