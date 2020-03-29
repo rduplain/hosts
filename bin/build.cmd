@@ -139,8 +139,8 @@ if "%version%" == "" (
   call echo Error. Provide version when calling :JANET_VERSION.
   exit /b 2
 )
-for /f %%i in ('janet -e "(print \"v\" janet/version)"') do set result=%%i
-if "%result%" == "%version%" (
+for /f %%i in ('janet -e "(print \"v\" janet/version)"') do set output=%%i
+if "%output%" == "%version%" (
   exit /b 0
 ) else (
   exit /b 1
