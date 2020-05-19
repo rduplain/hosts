@@ -35,7 +35,7 @@ REM   version prefix is reported by `janet --version`. For example, "v1.7.0".
 
 REM - Support configuration with environment variables.
 if not defined JANET_URL set JANET_URL=https://github.com/janet-lang/janet.git
-if not defined JANET_VERSION set JANET_VERSION=v1.9.0
+if not defined JANET_VERSION set JANET_VERSION=v1.9.1
 if not defined JANET_VERSION_CHECK set JANET_VERSION_CHECK=%JANET_VERSION%
 
 REM - x86 or x64? Clean .\deps\ when changing this value.
