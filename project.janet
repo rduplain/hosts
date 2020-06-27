@@ -29,7 +29,10 @@
     (when (not= 0 result)
       (os/exit result))))
 
-# Override `jpm test` to run test-suite.janet, in order to runs tests in order.
+# Remove `jpm test` built-in rule.
+(put (dyn :rules) "test" nil)
+
+# Define `jpm test` to run tests in order via test-suite.janet.
 (phony "test" ["build"]
        (let [suite (os/join (os/cwd) "test" "test-suite.janet")]
          (unless (os/stat suite)
