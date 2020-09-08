@@ -15,10 +15,12 @@ matrix:
           - .Makefile.d
           - .reqd
     - os: windows
-      language: c
+      language: c++
       before_script:
         - export CC=CL.exe
         - export CC_FOR_BUILD="$CC"
+        - export CXX=link.exe
+        - export CXX_FOR_BUILD="$CXX"
       script:
         - ./bin/build.cmd
       cache:
