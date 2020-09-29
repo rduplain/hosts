@@ -12,7 +12,7 @@ clean:
 	rm -fr build # Keep .Makefile.d and .reqd.
 
 MAKEFILE := $(lastword $(MAKEFILE_LIST))
-JANET_REV := v1.12.1
+JANET_REV := v1.12.2
 
 include .Makefile.d-init.mk
 include .Makefile.d/janet.mk
