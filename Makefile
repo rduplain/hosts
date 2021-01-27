@@ -6,7 +6,7 @@ src := $(shell find . -maxdepth 1 -name '*.janet')
 build: jpm-deps $(exe)
 
 test: build | jpm-command
-	@jpm test
+	@$(JPM) test
 
 clean:
 	rm -fr build # Keep .Makefile.d and .reqd.
@@ -25,6 +25,6 @@ src+ += $(shell find .git/refs/tags -maxdepth 1)
 
 $(exe): $(src+)
 	@rm -f $@
-	@jpm build
+	@$(JPM) build
 
 $(JANET): $(MAKEFILE)
