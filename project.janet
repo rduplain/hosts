@@ -8,7 +8,8 @@
 
 (declare-executable
  :name "hosts"
- :entry "hosts.janet")
+ :entry "hosts.janet"
+ :no-core true)
 
 (defn os/join
   "Join filepath parts according to current OS."
